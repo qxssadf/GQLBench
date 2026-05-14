@@ -1,0 +1,74 @@
+You are a database expert. I will show you a relational database schema including the overview of the database and the description of every table and column.
+I want to transform the relational database to graph database. 
+An `Entity Table` typically represents a real-world entity, and should be modeled as a Node in a graph database, while a `Join Table` typically represents a many-to-many relationship between two or more `Entity Table` and should be modeled as an Edge or several Edges in a graph database.
+### `Join Table` Examples:
+user_friends (stores user_id and friend_id to link users).
+order_items (stores order_id and product_id to link orders to products).
+
+I have already identified all the `Join Tables`. Here is the list of `Join Table`: {{jointables}}.
+Your task is to :
+    For each `Join Table`, analyze what edges should be constructed and provide the following:
+        1. The names of the `Join Table`. The `Join Table` must be one of the `Join tables` I provide.
+        2. The suggested names of the edges, i.e., edge_label. The edge_label should focus on the relationship between source entity and target entity.
+        3. The source node and target node for each edge. 
+            3.1 If multiple fields refer to the same entity type (e.g., multiple employees), treat them as separate roles and create multiple edges accordingly, but they may share the same edge_label if they are semantically identical.
+                e.g. 
+                    'mentorship': # edge_label , multiple edges share one edge_label, do not use `first_mentorship`,`second_mentorship` for edge_label
+                    [
+                        {
+                        'source':{
+                            'Entity_type': 'employees', 
+                            'filter_columns': ['mentor_id'] 
+                        },
+                        'target': {
+                            'Entity_type': 'employees',  
+                            'filter_columns': ['first_employee_id'] 
+                        }
+                        },
+                        {
+                        'source':{
+                            'Entity_type': 'employees', 
+                            'filter_columns': ['mentor_id'] 
+                        },
+                        'target': {
+                            'Entity_type': 'employees',  
+                            'filter_columns': ['second_employee_id'] 
+                        }
+                        }
+                    ]
+            3.2 Both source node and target node contain `Entity_type` and `filter_columns` to filter the node in the `Join Table`.
+            3.3 Bidirectional edges are allowed. They should be included twice in the output JSON.(e.g. a relate_to b and b relate_to a)
+
+
+### database_name: 
+    {{database_name}}
+### Overview of the database:
+    {{database_overview_json}}
+### description of every table and column:
+{% for table_name, table_desc in tables-%}
+    {{ table_name }}:
+    {{ table_desc }}
+{% endfor %}
+
+### Note: Your output should be in the json format as follows without extra explanation.
+### output json format:
+    {
+        join_table_name: 
+        {
+            edge_label: 
+            [
+                {
+                'source':{
+                    'Entity_type': XXX , # must be one of the `Entity tables`
+                    'filter_columns': [XXX,YYY]  # columns in the `Join Table` which can filter the source node
+                },
+                'target': {
+                    'Entity_type': XXX,  # must be one of the `Entity tables`
+                    'filter_columns': [XXX,YYY]  # columns in the `Join Table` which can filter the target node
+                }
+                }     
+            ]   
+        }
+    }
+
+### output:

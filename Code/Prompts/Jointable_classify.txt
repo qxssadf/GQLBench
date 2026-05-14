@@ -1,0 +1,28 @@
+You are a database expert. I will show you a relational database schema including the overview of the database and the description of every table and column.
+Then I will give you the `foreign key information` and I want to transform the relational database to graph database. 
+An `Entity Table` typically represents a real-world entity, and should be modeled as a Node in a graph database, while a `Join Table` typically represents a many-to-many relationship between two or more `Entity Table` and should be modeled as an Edge or several Edges in a graph database.
+### `Join Table` Examples:
+user_friends (stores user_id and friend_id to link users).
+order_items (stores order_id and product_id to link orders to products).
+
+### database_name: 
+    {{database_name}}
+### Overview of the database:
+    {{database_overview_json}}
+### description of every table and column:
+{% for table_name, table_desc in tables-%}
+    {{ table_name }}:
+    {{ table_desc }}
+{% endfor %}
+### foreign key information:
+    Each item has the following structure:
+        table_name: [{'to_table': XXX, 'from_to_columns': [[[XXX],[YYY]]], 'label': null}]
+        Here is the explanation:
+            table_name: the table which the foreign key starts from
+            to_table: the table referenced by the foreign key
+            from_to_columns: each item is in the format of [[XXX],[YYY]] indicating that columns in the current table (from_columns,i.e. [XXX]) references columns in the target table (to_columns,i.e.[YYY]).
+            label : not important which can be ignored
+    {{fk_info}}
+
+Please analyze whether table {{table_to_pred}} is a `Join Table`. If table {{table_to_pred}} is a `Join Table`, please output 1. Otherwise, output 0.
+You only need to output 0 or 1 without reasoning.

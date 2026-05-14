@@ -1,0 +1,16 @@
+Here is a database.
+### database_name: 
+    {{database_name}}
+### Overview of the database:
+    {{database_overview_json}}
+### description of every table and column:
+{% for table_name, table_desc in tables-%}
+    {{ table_name }}:
+    {{ table_desc }}
+{% endfor %}
+
+Given the following two entities and the semantic meaning of their relationship, determine the more reasonable direction of the edge between them.
+The pattern I give you is (a)-[:edge_name]->(b) or (b)-[:edge_name]->(a). `a` and `b` represent nodes. `edge_name` represents the edge between `a` and `b`. The arrow represents if the edge is from `a` to `b` or from `b` to `a`.
+if {{dir1}} is more semantically reasonable than the pattern {{dir2}}, output 1. Otherwise, output 0.
+You only need to output 0 or 1 without reasoning.
+

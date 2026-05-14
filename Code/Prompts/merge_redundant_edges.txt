@@ -1,0 +1,25 @@
+You are a database expert. I will show you a graph database schema including some edges from the source node to the target node.
+Your task is to canonicalize the duplicate edges. You should merge multiple edges if they are considered sementically equivalent or they can be generalized to the same edge.
+You should only consider the relationship between source node and target node, `other related node description` is for reference only.
+### source node
+{{source}}
+### source node description
+{{source_desc}}
+### target node
+{{target}}
+### target node description
+{{target_desc}}
+### other related node description
+{% for table_name, table_desc in other_nodes_desc-%}
+    {{ table_name }}:
+    {{ table_desc }}
+{% endfor %}
+### edges from source node to target node
+{{jt_edges}}
+{{fk_edges}}
+
+### output json format: 
+{origin_edge_label : new_edge_label}
+### example 
+    [{'edge_label':'first_mentorship'},{'edge_label':'second_mentorship'}] should be merged to {'first_mentorship':'mentorship','second_mentorship':'mentorship'}
+### output:

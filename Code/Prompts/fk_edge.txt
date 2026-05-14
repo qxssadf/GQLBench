@@ -1,0 +1,32 @@
+You are a database expert. I will show you a relational database schema including the overview of the database and the description of every table and column.
+Then I will give you the `foreign key information` and I want to transform the relational database to graph database. You should only focus on what edges should be constructed given the foreign keys.
+Your task is to analyze and inference the names of the edges and fill them into the `label` field.
+Here are the rules you should obey: 
+    1. if there is a foreign key relationship between 2 tables, you should construct an edge or several edges bewteen the 2 tables. 
+    2. Do not change anything outside `label` field. Your output must remain the same as the `foreign key information` input except `label` field, which you are asked to fill.
+    3. Make sure that the edge is natural and reasonable. The direction of edges may not be the same as that of the `foreign key information`. The direction is semantically determined.
+### Note: Your output should be the same format as `foreign key information`, but use a list to fill the `label` field. Even if a table T do not have foreign key, it should be included in the output.
+
+### database_name: 
+    {{database_name}}
+### Overview of the database:
+    {{database_overview_json}}
+### description of every table and column:
+{% for table_name, table_desc in tables-%}
+    {{ table_name }}:
+    {{ table_desc }}
+{% endfor %}
+### foreign key information:
+    Each item has the following structure:
+        table_name: [{'to_table': XXX, 'from_to_columns': [[[XXX],[YYY]]], 'label': null}]
+        Here is the explanation:
+            table_name: the table which the foreign key starts from
+            to_table: the table referenced by the foreign key
+            from_to_columns: each item is in the format of [[XXX],[YYY]] indicating that columns in the current table (from_columns,i.e. [XXX]) references columns in the target table (to_columns,i.e.[YYY]).
+            label : name of edge which you should fill,the number of `label` should equal to len(from_to_columns)
+    {{fk_info}}
+
+### output json format:
+    {table_name: [{'to_table': XXX, 'from_to_columns': [[[XXX,YYY]]], 'label': [edge_name]}]}
+
+### output:
