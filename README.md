@@ -9,7 +9,7 @@ GQLBench is a large-scale benchmark for natural language to graph query language
 
 | Component            | Location                                                                           | Description                                            |
 | -------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| Query benchmark data | `[benchmark_data_new/](benchmark_data_new/)`                                       | NL–GQL query pairs and schemas (included in this repo) |
+| Query benchmark data | `benchmark_data_new/`                                       | NL–GQL query pairs and schemas (included in this repo) |
 | Graph database files | [Hugging Face: qxssadf/GQLBench](https://huggingface.co/datasets/qxssadf/GQLBench) | Neo4j and Nebula graph data (~9 GB)                    |
 
 
